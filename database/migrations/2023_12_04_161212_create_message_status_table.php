@@ -13,6 +13,21 @@ return new class extends Migration
     {
         Schema::create('message_status', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignIdFor(\App\Models\Chat::class)
+                ->constrained()
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+            $table->foreignIdFor(\App\Models\Message::class)
+                ->constrained()
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+            $table->foreignIdFor(\App\Models\User::class)
+                ->constrained()
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+            $table->boolean('is_read')->default(false);
+
             $table->timestamps();
         });
     }

@@ -7,8 +7,6 @@ use App\Http\Resources\Chat\ChatResource;
 use App\Http\Resources\User\UserResource;
 use App\Models\Chat;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Session\Store;
 use Illuminate\Support\Facades\DB;
 
 class ChatController extends Controller
@@ -24,8 +22,11 @@ class ChatController extends Controller
     {
         $users = User::query()->where('id', '!=', auth()->id())->get();
 
+        $chats = auth()->user()->chats()->get();
+
         return inertia('Chat/Index', [
             'users' => UserResource::collection($users)->resolve(),
+            'chats' => ChatResource::collection($chats)->resolve(),
         ]);
     }
 
@@ -49,6 +50,13 @@ class ChatController extends Controller
             DB::rollBack();
         }
 
+        return inertia('Chat/Show', [
+            'chat' => ChatResource::make($chat)->resolve(),
+        ]);
+    }
+
+    public function show(Chat $chat): \Inertia\Response|\Inertia\ResponseFactory
+    {
         return inertia('Chat/Show', [
             'chat' => ChatResource::make($chat)->resolve(),
         ]);

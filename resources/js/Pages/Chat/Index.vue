@@ -2,6 +2,7 @@
 
 import {Head} from "@inertiajs/vue3";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import { router } from '@inertiajs/vue3'
 
 defineProps({
     users: {
@@ -9,6 +10,10 @@ defineProps({
         default: () => []
     }
 });
+
+const store = (id) => {
+    router.post(route('chats.store', {users: [id]}));
+};
 </script>
 
 <template>
@@ -27,7 +32,11 @@ defineProps({
                     class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-4"
                 >
                     <div class="p-6 text-gray-900 dark:text-gray-100">{{ user.id }} - {{ user.name }}</div>
-                    <a href="#" class="block p-6 text-gray-900 dark:text-gray-100 bg-gray-500">Message</a>
+                    <a
+                        @click.prevent="store(user.id)"
+                        href="#"
+                        class="block p-6 text-gray-900 dark:text-gray-100 bg-gray-500">Message
+                    </a>
                 </div>
             </div>
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">

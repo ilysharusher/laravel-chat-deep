@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\{ChatController, MessageController, ProfileController};
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -30,13 +30,25 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/chats', [App\Http\Controllers\ChatController::class, 'index'])->name('chats.index');
-    Route::post('/chats', [App\Http\Controllers\ChatController::class, 'store'])->name('chats.store');
-    Route::get('/chats/{chat}', [App\Http\Controllers\ChatController::class, 'show'])->name('chats.show');
+    Route::controller(ChatController::class)
+        ->prefix('chats')
+        ->name('chats.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::post('/', 'store')->name('store');
+            Route::get('/{chat}', 'show')->name('show');
+        });
+
+    Route::controller(MessageController::class)
+        ->prefix('messages')
+        ->name('messages.')
+        ->group(function () {
+            Route::post('/', 'store')->name('store');
+        });
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

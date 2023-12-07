@@ -34,10 +34,10 @@ const store = (id) => {
                     :key="id"
                     class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-4"
                 >
-                    <div class="p-6 text-gray-900 dark:text-gray-100">{{ user.id }} - {{ user.name }}</div>
+                    <div class="p-5 text-gray-900 dark:text-gray-100">{{ user.id }} - {{ user.name }}</div>
                     <a
                         href="#"
-                        class="block p-6 text-gray-900 dark:text-gray-100 bg-gray-500"
+                        class="block p-5 text-gray-900 dark:text-gray-100 bg-gray-500"
                         @click.prevent="store(user.id)"
                     >Message
                     </a>
@@ -49,10 +49,10 @@ const store = (id) => {
                     :key="id"
                     class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-4"
                 >
-                    <div class="p-6 text-gray-900 dark:text-gray-100">{{ chat.id }} - {{ chat.title ?? 'Chat' }}</div>
+                    <div class="p-5 text-gray-900 dark:text-gray-100">{{ chat.id }} - {{ chat.title ?? 'Chat' }}</div>
                     <Link
                         :href="route('chats.show', chat.id)"
-                        class="block p-6 text-gray-900 dark:text-gray-100 bg-gray-500"
+                        class="block p-5 text-gray-900 dark:text-gray-100 bg-gray-500"
                     >
                         Open
                     </Link>

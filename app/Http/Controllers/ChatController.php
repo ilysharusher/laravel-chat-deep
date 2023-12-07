@@ -22,7 +22,7 @@ class ChatController extends Controller
     {
         $users = User::query()->where('id', '!=', auth()->id())->get();
 
-        $chats = auth()->user()->chats()->get();
+        $chats = auth()->user()->chats()->has('messages')->get();
 
         return inertia('Chat/Index', [
             'users' => UserResource::collection($users)->resolve(),
@@ -30,7 +30,7 @@ class ChatController extends Controller
         ]);
     }
 
-    public function store(StoreRequest $request): \Inertia\Response|\Inertia\ResponseFactory
+    public function store(StoreRequest $request): \Illuminate\Http\RedirectResponse
     {
         $user_ids = array_merge($request->validated()['users'], (array)auth()->id());
 
@@ -50,15 +50,14 @@ class ChatController extends Controller
             DB::rollBack();
         }
 
-        return inertia('Chat/Show', [
-            'chat' => ChatResource::make($chat)->resolve(),
-        ]);
+        return redirect()->route('chats.show', $chat->id);
     }
 
     public function show(Chat $chat): \Inertia\Response|\Inertia\ResponseFactory
     {
         return inertia('Chat/Show', [
             'chat' => ChatResource::make($chat)->resolve(),
+            'users' => UserResource::collection($chat->users()->get())->resolve(),
         ]);
     }
 }

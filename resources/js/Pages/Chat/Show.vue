@@ -1,7 +1,7 @@
 <script setup>
 
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import {Head, useForm} from '@inertiajs/vue3';
+import {Head, useForm, usePage} from '@inertiajs/vue3';
 
 const props = defineProps({
     chat: {
@@ -13,14 +13,25 @@ const props = defineProps({
     },
 });
 
+const interlocutors = props.users.map(
+    (user) => user.id)
+    .filter(
+        (id) => id !== usePage().props.auth.user.id,
+    );
+
 const form = useForm({
-    message: '',
+    chat_id: props.chat.id,
+    interlocutors: interlocutors,
+    text: '',
 });
 
 const store = () => {
-    window.axios.post(window.route('messages.store', {chat: props.chat.id}), form);
+    window.axios.post(window.route('messages.store'), form)
+        .then((result) => {
+            console.log(result);
+        });
 
-    form.message = '';
+    form.text = '';
 };
 </script>
 
@@ -53,7 +64,7 @@ const store = () => {
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-3 text-gray-900 dark:text-gray-100">
                         <input
-                            v-model="form.message"
+                            v-model="form.text"
                             class="w-full border-gray-300 dark:bg-gray-700 dark:border-gray-600 focus:border-indigo-300 rounded-md shadow-sm"
                             type="text"
                         >

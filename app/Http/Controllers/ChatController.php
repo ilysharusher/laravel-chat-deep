@@ -48,6 +48,10 @@ class ChatController extends Controller
             DB::commit();
         } catch (\Exception $exception) {
             DB::rollBack();
+
+            return redirect()->back()->withErrors([
+                'message' => $exception->getMessage()
+            ]);
         }
 
         return redirect()->route('chats.show', $chat->id);

@@ -11,6 +11,10 @@ const props = defineProps({
         type: Array,
         default: () => [],
     },
+    messages: {
+        type: Array,
+        default: () => [],
+    },
 });
 
 const interlocutors = props.users.map(
@@ -28,7 +32,7 @@ const form = useForm({
 const store = () => {
     window.axios.post(window.route('messages.store'), form)
         .then((result) => {
-            console.log(result);
+            props.messages.push(result.data);
         });
 
     form.text = '';
@@ -57,8 +61,24 @@ const store = () => {
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-4">
                     <div class="p-5 text-gray-900 dark:text-gray-100">{{ props.chat.title ?? 'Your Chat' }}</div>
                 </div>
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-4">
-                    <div class="p-5 text-gray-900 dark:text-gray-100">
+                <div
+                    v-if="messages.length"
+                    class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-4"
+                >
+                    <div class="p-5 text-gray-900 dark:text-gray-100 text-start">
+                        <div
+                            v-for="(message, id) in messages"
+                            :key="id"
+                            class="inline-block"
+                        >
+                            <div
+                                class="bg-gray-500 p-3 text-gray-900 dark:text-gray-100"
+                            >
+                                <p>{{ message.user_name }}</p>
+                                <p class="font-bold">{{ message.text }}</p>
+                                <p class="italic text-xs">{{ message.time }}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">

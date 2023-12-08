@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Chat\StoreRequest;
 use App\Http\Resources\Chat\ChatResource;
+use App\Http\Resources\Message\MessageResource;
 use App\Http\Resources\User\UserResource;
 use App\Models\Chat;
 use App\Models\User;
@@ -62,6 +63,7 @@ class ChatController extends Controller
         return inertia('Chat/Show', [
             'chat' => ChatResource::make($chat)->resolve(),
             'users' => UserResource::collection($chat->users()->get())->resolve(),
+            'messages' => MessageResource::collection($chat->messages()->with('user')->get())->resolve(),
         ]);
     }
 }

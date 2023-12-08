@@ -14,4 +14,14 @@ class Message extends Model
         'user_id',
         'text'
     ];
+
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function getTimeAttribute(): string
+    {
+        return $this->created_at->diffForHumans();
+    }
 }

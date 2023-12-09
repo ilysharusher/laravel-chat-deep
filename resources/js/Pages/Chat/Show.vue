@@ -65,18 +65,27 @@ const store = () => {
                     v-if="messages.length"
                     class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-4"
                 >
-                    <div class="p-5 text-gray-900 dark:text-gray-100 text-start">
+                    <div
+                        class="p-5 text-gray-900 dark:text-gray-100 text-start"
+                    >
                         <div
                             v-for="(message, id) in messages"
                             :key="id"
                             class="mb-4"
+                            :class="message.is_owner ? 'text-right' : 'text-left'"
                         >
                             <div
-                                class="bg-gray-700 p-3 text-gray-900 dark:text-gray-100 inline-block"
+                                class="p-3 inline-block"
+                                :class="
+                                    message.is_owner
+                                        ? 'text-gray-900 dark:text-gray-100 bg-gray-700'
+                                        : 'text-gray-900 dark:text-gray-100 bg-gray-900'
+                                "
                             >
                                 <p>{{ message.user_name }}</p>
                                 <p class="font-bold">{{ message.text }}</p>
                                 <p class="italic text-xs">{{ message.time }}</p>
+                                <p class="italic text-xs">{{ message.is_owner }}</p>
                             </div>
                         </div>
                     </div>

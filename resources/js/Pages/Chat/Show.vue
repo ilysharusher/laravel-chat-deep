@@ -69,10 +69,10 @@ const store = () => {
                         <div
                             v-for="(message, id) in messages"
                             :key="id"
-                            class="inline-block"
+                            class="mb-4"
                         >
                             <div
-                                class="bg-gray-500 p-3 text-gray-900 dark:text-gray-100"
+                                class="bg-gray-700 p-3 text-gray-900 dark:text-gray-100 inline-block"
                             >
                                 <p>{{ message.user_name }}</p>
                                 <p class="font-bold">{{ message.text }}</p>
@@ -87,6 +87,7 @@ const store = () => {
                             v-model="form.text"
                             class="w-full border-gray-300 dark:bg-gray-700 dark:border-gray-600 focus:border-indigo-300 rounded-md shadow-sm"
                             type="text"
+                            @keydown.enter.prevent="store"
                         >
                     </div>
                     <a

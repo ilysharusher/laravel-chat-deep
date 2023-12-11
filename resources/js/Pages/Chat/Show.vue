@@ -47,7 +47,7 @@ const store = () => {
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Chat</h2>
         </template>
 
-        <div class="py-12 flex text-center">
+        <div class="py-12 flex text-center select-none">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div
                     v-for="(user, id) in users"
@@ -94,13 +94,13 @@ const store = () => {
                     <div class="p-3 text-gray-900 dark:text-gray-100">
                         <input
                             v-model="form.text"
-                            class="w-full border-gray-300 dark:bg-gray-700 dark:border-gray-600 focus:border-indigo-300 rounded-md shadow-sm"
+                            class="w-full border-gray-300 dark:bg-gray-700 dark:border-gray-600 focus:border-indigo-300 rounded-lg shadow-sm"
                             type="text"
                             @keydown.enter.prevent="store"
                         >
                     </div>
                     <a
-                        class="block p-3 text-gray-900 dark:text-gray-100 bg-gray-500"
+                        class="block p-3 text-gray-900 dark:text-gray-100 bg-gray-500 hover:bg-blue-500 transition-colors duration-200"
                         href="#"
                         @click.prevent="store"
                     >

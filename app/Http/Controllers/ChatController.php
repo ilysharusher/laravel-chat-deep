@@ -38,7 +38,7 @@ class ChatController extends Controller
         try {
             DB::beginTransaction();
 
-            $chat = Chat::query()->firstOrCreate([
+            $chat = Chat::query()->updateOrCreate([
                 'users' => $this->getUserIdsAsString($user_ids),
             ], [
                 'title' => $request->validated()['title'] ?? null,

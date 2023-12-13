@@ -23,7 +23,10 @@ class ChatController extends Controller
     {
         $users = User::query()->where('id', '!=', auth()->id())->get();
 
-        $chats = auth()->user()->chats()->has('messages')->get();
+        $chats = auth()->user()->chats()
+            ->has('messages')
+            ->withCount('unreadMessageStatuses')
+            ->get();
 
         return inertia('Chat/Index', [
             'users' => UserResource::collection($users)->resolve(),
@@ -33,7 +36,7 @@ class ChatController extends Controller
 
     public function store(StoreRequest $request): \Illuminate\Http\RedirectResponse
     {
-        $user_ids = array_merge($request->validated()['users'], (array) auth()->id());
+        $user_ids = array_merge($request->validated()['users'], (array)auth()->id());
 
         try {
             DB::beginTransaction();

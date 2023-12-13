@@ -23,4 +23,11 @@ class Chat extends Model
     {
         return $this->hasMany(Message::class);
     }
+
+    public function unreadMessageStatuses(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(MessageStatus::class)
+            ->where('user_id', auth()->id())
+            ->where('is_read', false);
+    }
 }

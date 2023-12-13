@@ -17,4 +17,9 @@ class MessageStatus extends Model
         'user_id',
         'is_read',
     ];
+
+    public function chat(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Chat::class);
+    }
 }

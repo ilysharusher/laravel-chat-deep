@@ -149,7 +149,10 @@ const isUserInGroupList = (userId) => {
                         :href="route('chats.show', chat.id)"
                         class="block p-5 text-gray-900 dark:text-gray-100 bg-gray-500 hover:bg-blue-500 transition-colors duration-200"
                     >
-                        Open
+                        Open <span
+                            v-if="chat.unread_message_statuses_count"
+                            class="bg-red-500 text-white rounded-lg px-2 py-1"
+                        >{{ chat.unread_message_statuses_count }}</span>
                     </Link>
                 </div>
             </div>

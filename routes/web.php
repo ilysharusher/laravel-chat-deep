@@ -51,8 +51,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/test-ws-channel', function () {
-    event(new \App\Events\WsEvent());
-});
-
 require __DIR__ . '/auth.php';

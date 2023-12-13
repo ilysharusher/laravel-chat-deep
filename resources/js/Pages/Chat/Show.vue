@@ -2,6 +2,7 @@
 
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import {Head, useForm, usePage} from '@inertiajs/vue3';
+import {onBeforeMount} from 'vue';
 
 const props = defineProps({
     chat: {
@@ -15,6 +16,15 @@ const props = defineProps({
         type: Array,
         default: () => [],
     },
+});
+
+onBeforeMount(() => {
+    window.Echo.channel('store-message-event')
+        .listen('.store-message-event', (e) => {
+            e.message.is_owner = false;
+
+            props.messages.push(e.message);
+        });
 });
 
 const interlocutors = props.users.map(
@@ -85,7 +95,6 @@ const store = () => {
                                 <p>{{ message.user_name }}</p>
                                 <p class="font-bold">{{ message.text }}</p>
                                 <p class="italic text-xs">{{ message.time }}</p>
-                                <p class="italic text-xs">{{ message.is_owner }}</p>
                             </div>
                         </div>
                     </div>

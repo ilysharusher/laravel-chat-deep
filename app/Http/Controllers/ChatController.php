@@ -33,7 +33,7 @@ class ChatController extends Controller
 
     public function store(StoreRequest $request): \Illuminate\Http\RedirectResponse
     {
-        $user_ids = array_merge($request->validated()['users'], (array)auth()->id());
+        $user_ids = array_merge($request->validated()['users'], (array) auth()->id());
 
         try {
             DB::beginTransaction();
@@ -51,7 +51,7 @@ class ChatController extends Controller
             DB::rollBack();
 
             return redirect()->back()->withErrors([
-                'message' => $exception->getMessage()
+                'message' => $exception->getMessage(),
             ]);
         }
 

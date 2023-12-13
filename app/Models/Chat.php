@@ -11,7 +11,7 @@ class Chat extends Model
 
     protected $fillable = [
         'title',
-        'users'
+        'users',
     ];
 
     public function users(): \Illuminate\Database\Eloquent\Relations\BelongsToMany

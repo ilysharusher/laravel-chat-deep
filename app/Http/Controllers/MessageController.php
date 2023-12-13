@@ -28,7 +28,7 @@ class MessageController extends Controller
                 MessageStatus::query()->create([
                     'chat_id' => $validatedData['chat_id'],
                     'message_id' => $message->id,
-                    'user_id' => $interlocutorId
+                    'user_id' => $interlocutorId,
                 ]);
             }
 
@@ -39,7 +39,7 @@ class MessageController extends Controller
             DB::rollBack();
 
             return response()->json([
-                'message' => $exception->getMessage()
+                'message' => $exception->getMessage(),
             ], 500);
         }
 

@@ -15,6 +15,6 @@ class MessageStatus extends Model
         'chat_id',
         'message_id',
         'user_id',
-        'is_read'
+        'is_read',
     ];
 }

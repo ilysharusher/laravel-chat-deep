@@ -2,7 +2,7 @@
 
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import {Head, useForm, usePage} from '@inertiajs/vue3';
-import {onBeforeMount} from 'vue';
+import {onBeforeMount, ref} from 'vue';
 
 const props = defineProps({
     chat: {
@@ -18,12 +18,12 @@ const props = defineProps({
     },
 });
 
-onBeforeMount(() => {
-    window.Echo.channel('store-message-event')
-        .listen('.store-message-event', (e) => {
-            e.message.is_owner = false;
+const messages = ref(props.messages);
 
-            props.messages.push(e.message);
+onBeforeMount(() => {
+    window.Echo.channel(`store-message-event-${props.chat.id}-chat`)
+        .listen('.store-message-event', (e) => {
+            messages.value.push(e.message);
         });
 });
 
@@ -42,7 +42,7 @@ const form = useForm({
 const store = () => {
     window.axios.post(window.route('messages.store'), form)
         .then((result) => {
-            props.messages.push(result.data);
+            messages.value.push(result.data);
         });
 
     form.text = '';

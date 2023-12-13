@@ -12,7 +12,7 @@ class Message extends Model
     protected $fillable = [
         'chat_id',
         'user_id',
-        'text'
+        'text',
     ];
 
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -27,6 +27,6 @@ class Message extends Model
 
     public function getIsOwnerAttribute(): bool
     {
-        return (int)$this->user_id === (int)auth()->id();
+        return (int) $this->user_id === (int) auth()->id();
     }
 }

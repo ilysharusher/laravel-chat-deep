@@ -19,18 +19,24 @@ const props = defineProps({
 });
 
 const messages = ref(props.messages);
+const userId = usePage().props.auth.user.id;
 
 onBeforeMount(() => {
     window.Echo.channel(`store-message-event-${props.chat.id}-chat`)
         .listen('.store-message-event', (e) => {
             messages.value.push(e.message);
+
+            window.axios.patch(window.route('update.message.status'), {
+                user_id: userId,
+                message_id: e.message.id,
+            });
         });
 });
 
 const interlocutors = props.users.map(
     (user) => user.id)
     .filter(
-        (id) => id !== usePage().props.auth.user.id,
+        (id) => id !== userId,
     );
 
 const form = useForm({

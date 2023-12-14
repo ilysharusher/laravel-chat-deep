@@ -1,10 +1,10 @@
 <script setup>
 
-import {Head, Link, router} from '@inertiajs/vue3';
+import {Head, Link, router, usePage} from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import {ref} from 'vue';
+import {onBeforeMount, ref} from 'vue';
 
-defineProps({
+const props = defineProps({
     users: {
         type: Array,
         default: () => [],
@@ -16,10 +16,19 @@ defineProps({
 });
 
 const groupCheckbox = ref(false);
-
 const groupList = ref([]);
-
 const title = ref(null);
+
+onBeforeMount(() => {
+    window.Echo.channel(`store-message-status-event-${usePage().props.auth.user.id}-user`)
+        .listen('.store-message-status-event', (e) => {
+            props.chats.forEach(chat => {
+                if (chat.id === e.chat_id) {
+                    chat.unread_message_statuses_count = e.count;
+                }
+            });
+        });
+});
 
 const store = (id) => {
     router.post(window.route('chats.store', {users: [id]}));

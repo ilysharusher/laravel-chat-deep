@@ -26,10 +26,12 @@ onBeforeMount(() => {
         .listen('.store-message-event', (e) => {
             messages.value.push(e.message);
 
-            window.axios.patch(window.route('update.message.status'), {
-                user_id: userId,
-                message_id: e.message.id,
-            });
+            if (window.location.href === window.route('chats.show', {chat: props.chat.id})) {
+                window.axios.patch(window.route('update.message.status'), {
+                    user_id: userId,
+                    message_id: e.message.id,
+                });
+            }
         });
 });
 

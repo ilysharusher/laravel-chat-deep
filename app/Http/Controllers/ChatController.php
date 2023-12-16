@@ -25,6 +25,7 @@ class ChatController extends Controller
 
         $chats = auth()->user()->chats()
             ->has('messages')
+            ->with('lastMessage')
             ->withCount('unreadMessageStatuses')
             ->get();
 

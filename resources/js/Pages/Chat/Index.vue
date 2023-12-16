@@ -25,6 +25,7 @@ onBeforeMount(() => {
             props.chats.forEach(chat => {
                 if (chat.id === e.chat_id) {
                     chat.unread_message_statuses_count = e.count;
+                    chat.last_message = e.message;
                 }
             });
         });
@@ -153,14 +154,27 @@ const isUserInGroupList = (userId) => {
                     :key="id"
                     class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-4"
                 >
-                    <div class="p-5 text-gray-900 dark:text-gray-100">{{ chat.id }} - {{ chat.title ?? 'Chat' }}</div>
+                    <div class="p-5 text-gray-900 dark:text-gray-100 border-b border-gray-600">
+                        {{ chat.id }} - {{
+                            chat.title ?? 'Chat'
+                        }}
+                    </div>
+                    <div
+                        v-if="chat.last_message"
+                        class="mx-6 my-3"
+                        :class="chat.unread_message_statuses_count ? 'text-red-500 font-bold' : 'text-gray-900 dark:text-gray-100 opacity-50'"
+                    >
+                        {{ chat.last_message.user_name }}:
+                        {{ chat.last_message.text }}<br>
+                        <span class="text-sm opacity-30">{{ chat.last_message.time }}</span>
+                    </div>
                     <Link
                         :href="route('chats.show', chat.id)"
                         class="block p-5 text-gray-900 dark:text-gray-100 bg-gray-500 hover:bg-blue-500 transition-colors duration-200"
                     >
                         Open <span
                             v-if="chat.unread_message_statuses_count"
-                            class="bg-red-500 text-white rounded-lg px-2 py-1"
+                            class="bg-red-500 text-white rounded-lg px-2 py-1 ml-0.5"
                         >{{ chat.unread_message_statuses_count }}</span>
                     </Link>
                 </div>

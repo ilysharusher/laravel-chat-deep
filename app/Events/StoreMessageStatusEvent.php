@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Http\Resources\Message\MessageResource;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
@@ -21,6 +22,7 @@ class StoreMessageStatusEvent implements ShouldBroadcast
         private readonly int $chatId,
         private readonly int $count,
         private readonly int $interlocutorId,
+        private readonly \App\Models\Message $message,
     ) {
     }
 
@@ -46,6 +48,7 @@ class StoreMessageStatusEvent implements ShouldBroadcast
         return [
             'chat_id' => $this->chatId,
             'count' => $this->count,
+            'message' => MessageResource::make($this->message)->resolve(),
         ];
     }
 }

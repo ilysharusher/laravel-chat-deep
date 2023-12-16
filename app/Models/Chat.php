@@ -30,4 +30,11 @@ class Chat extends Model
             ->where('user_id', auth()->id())
             ->where('is_read', false);
     }
+
+    public function lastMessage(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Message::class)
+            ->latestOfMany()
+            ->with('user');
+    }
 }

@@ -13,6 +13,6 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
+Broadcast::channel('store-message-status-event-{id}-user', function ($user, $id) {
+    return (int)$user->id === (int)$id;
 });

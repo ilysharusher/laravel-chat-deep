@@ -20,7 +20,7 @@ const groupList = ref([]);
 const title = ref(null);
 
 onBeforeMount(() => {
-    window.Echo.channel(`store-message-status-event-${usePage().props.auth.user.id}-user`)
+    window.Echo.private(`store-message-status-event-${usePage().props.auth.user.id}-user`)
         .listen('.store-message-status-event', (e) => {
             props.chats.forEach(chat => {
                 if (chat.id === e.chat_id) {

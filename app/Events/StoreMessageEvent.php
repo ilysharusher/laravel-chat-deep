@@ -5,11 +5,11 @@ namespace App\Events;
 use App\Http\Resources\Message\MessageBroadcastResource;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class StoreMessageEvent implements ShouldBroadcast
+class StoreMessageEvent implements ShouldBroadcastNow
 {
     use Dispatchable;
     use InteractsWithSockets;
@@ -31,7 +31,7 @@ class StoreMessageEvent implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new Channel('store-message-event-'.$this->message->chat_id.'-chat'),
+            new Channel('store-message-event-' . $this->message->chat_id . '-chat'),
         ];
     }
 

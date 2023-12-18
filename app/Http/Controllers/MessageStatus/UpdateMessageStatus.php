@@ -13,13 +13,7 @@ class UpdateMessageStatus extends Controller
      */
     public function __invoke(UpdateMessageStatusRequest $request): void
     {
-        $validatedData = $request->validated();
-
-        MessageStatus::query()
-            ->where('user_id', $validatedData['user_id'])
-            ->where('message_id', $validatedData['message_id'])
-            ->update([
-                'is_read' => true,
-            ]);
+        MessageStatus::query()->where($request->only(['user_id', 'message_id']))
+            ->update(['is_read' => true]);
     }
 }

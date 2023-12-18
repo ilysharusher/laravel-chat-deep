@@ -18,7 +18,7 @@ const props = defineProps({
     },
 });
 
-const messages = ref(props.messages);
+const messages = ref(props.messages.slice().reverse());
 const userId = usePage().props.auth.user.id;
 
 onBeforeMount(() => {

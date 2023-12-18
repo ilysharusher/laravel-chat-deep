@@ -69,10 +69,17 @@ class ChatController extends Controller
                 'is_read' => true,
             ]);
 
+        $page = request('page', 1);
+
         return inertia('Chat/Show', [
             'chat' => ChatResource::make($chat)->resolve(),
             'users' => UserResource::collection($chat->users()->get())->resolve(),
-            'messages' => MessageResource::collection($chat->messages()->with('user')->get())->resolve(),
+            'messages' => MessageResource::collection(
+                $chat->messages()
+                    ->with('user')
+                    ->latest()
+                    ->paginate(5, '*', 'page', $page)
+            )->resolve(),
         ]);
     }
 }

@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Chat;
 
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\Message\LoadMessagesController;
 use App\Http\Requests\Chat\StoreRequest;
 use App\Http\Resources\Chat\ChatResource;
-use App\Http\Resources\Message\MessageResource;
 use App\Http\Resources\User\UserResource;
 use App\Models\Chat;
 use App\Models\User;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 
 class ChatController extends Controller
@@ -69,17 +71,10 @@ class ChatController extends Controller
                 'is_read' => true,
             ]);
 
-        $page = request('page', 1);
-
         return inertia('Chat/Show', [
             'chat' => ChatResource::make($chat)->resolve(),
             'users' => UserResource::collection($chat->users()->get())->resolve(),
-            'messages' => MessageResource::collection(
-                $chat->messages()
-                    ->with('user')
-                    ->latest()
-                    ->paginate(5, '*', 'page', $page)
-            )->resolve(),
+            'messages' => App::call(LoadMessagesController::class, compact('chat')),
         ]);
     }
 }

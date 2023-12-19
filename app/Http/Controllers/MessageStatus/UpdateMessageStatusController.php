@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\MessageStatus\UpdateMessageStatusRequest;
 use App\Models\MessageStatus;
 
-class UpdateMessageStatus extends Controller
+class UpdateMessageStatusController extends Controller
 {
     /**
      * Handle the incoming request.

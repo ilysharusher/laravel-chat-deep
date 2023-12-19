@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\ChatController;
-use App\Http\Controllers\MessageController;
-use App\Http\Controllers\MessageStatus\UpdateMessageStatus;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Chat\ChatController;
+use App\Http\Controllers\Message\LoadMessagesController;
+use App\Http\Controllers\Message\MessageController;
+use App\Http\Controllers\MessageStatus\UpdateMessageStatusController;
+use App\Http\Controllers\Profile\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -49,7 +50,10 @@ Route::middleware('auth')->group(function () {
             Route::post('/', 'store')->name('store');
         });
 
-    Route::patch('/update/message/status', UpdateMessageStatus::class)
+    Route::post('/load/messages', LoadMessagesController::class)
+        ->name('load.messages');
+
+    Route::patch('/update/message/status', UpdateMessageStatusController::class)
         ->name('update.message.status');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

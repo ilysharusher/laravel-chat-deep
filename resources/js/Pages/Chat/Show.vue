@@ -20,6 +20,7 @@ const props = defineProps({
 
 const messages = ref(props.messages.slice().reverse());
 const userId = usePage().props.auth.user.id;
+let page = 1;
 
 onBeforeMount(() => {
     window.Echo.channel(`store-message-event-${props.chat.id}-chat`)
@@ -55,6 +56,13 @@ const store = () => {
 
     form.text = '';
 };
+
+const loadMoreMessages = () => {
+    window.axios.post(window.route('load.messages', {chat_id: props.chat.id, page: ++page}))
+        .then((result) => {
+            messages.value = result.data.concat(messages.value);
+        });
+};
 </script>
 
 <template>
@@ -77,12 +85,19 @@ const store = () => {
             </div>
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-4">
-                    <div class="p-5 text-gray-900 dark:text-gray-100">{{ props.chat.title ?? 'Your Chat' }}</div>
+                    <div class="p-4 text-gray-900 dark:text-gray-100">{{ props.chat.title ?? 'Your Chat' }}</div>
                 </div>
                 <div
                     v-if="messages.length"
                     class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-4"
                 >
+                    <a
+                        class="block text-gray-900 dark:text-gray-100 border-b border-gray-600 py-3 hover:bg-blue-500 transition-colors duration-200"
+                        href="#"
+                        @click.prevent="loadMoreMessages"
+                    >
+                        Load more
+                    </a>
                     <div
                         class="p-5 text-gray-900 dark:text-gray-100 text-start"
                     >

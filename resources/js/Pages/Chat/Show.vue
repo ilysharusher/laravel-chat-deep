@@ -16,11 +16,16 @@ const props = defineProps({
         type: Array,
         default: () => [],
     },
+    isLastPage: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 const messages = ref(props.messages.slice().reverse());
 const userId = usePage().props.auth.user.id;
 let page = 1;
+const isLastPage = ref(props.isLastPage);
 
 onBeforeMount(() => {
     window.Echo.channel(`store-message-event-${props.chat.id}-chat`)
@@ -60,7 +65,8 @@ const store = () => {
 const loadMoreMessages = () => {
     window.axios.post(window.route('load.messages', {chat_id: props.chat.id, page: ++page}))
         .then((result) => {
-            messages.value = result.data.concat(messages.value);
+            messages.value = result.data.messages.concat(messages.value);
+            isLastPage.value = result.data.is_last_page;
         });
 };
 </script>
@@ -92,6 +98,7 @@ const loadMoreMessages = () => {
                     class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-4"
                 >
                     <a
+                        v-if="!isLastPage"
                         class="block text-gray-900 dark:text-gray-100 border-b border-gray-600 py-3 hover:bg-blue-500 transition-colors duration-200"
                         href="#"
                         @click.prevent="loadMoreMessages"

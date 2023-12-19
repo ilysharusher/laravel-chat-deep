@@ -71,10 +71,13 @@ class ChatController extends Controller
                 'is_read' => true,
             ]);
 
+        $messages = App::call(LoadMessagesController::class, compact('chat'))->getData();
+
         return inertia('Chat/Show', [
             'chat' => ChatResource::make($chat)->resolve(),
             'users' => UserResource::collection($chat->users()->get())->resolve(),
-            'messages' => App::call(LoadMessagesController::class, compact('chat')),
+            'messages' => $messages->messages,
+            'isLastPage' => $messages->is_last_page,
         ]);
     }
 }

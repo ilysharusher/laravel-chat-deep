@@ -86,12 +86,17 @@ const loadMoreMessages = () => {
                     :key="id"
                     class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-4"
                 >
-                    <div class="p-5 text-gray-900 dark:text-gray-100">{{ user.id }} - {{ user.name }}</div>
+                    <div
+                        class="p-5 text-gray-900 dark:text-gray-100"
+                        :class="user.id === userId ? 'bg-blue-500' : ''"
+                    >
+                        {{ user.name }}
+                    </div>
                 </div>
             </div>
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-4">
-                    <div class="p-4 text-gray-900 dark:text-gray-100">{{ props.chat.title ?? 'Your Chat' }}</div>
+                    <div class="p-4 text-gray-900 dark:text-gray-100">{{ props.chat.title }}</div>
                 </div>
                 <div
                     v-if="messages.length"

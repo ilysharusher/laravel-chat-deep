@@ -37,4 +37,16 @@ class Chat extends Model
             ->latestOfMany()
             ->with('user');
     }
+
+    public function chatWith(): \Illuminate\Database\Eloquent\Relations\HasOneThrough
+    {
+        return $this->hasOneThrough(
+            User::class,
+            ChatUser::class,
+            'chat_id',
+            'id',
+            'id',
+            'user_id'
+        )->where('user_id', '!=', auth()->id());
+    }
 }

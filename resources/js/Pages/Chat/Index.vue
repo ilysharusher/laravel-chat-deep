@@ -123,7 +123,7 @@ const isUserInGroupList = (userId) => {
                         :key="id"
                         class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-4"
                     >
-                        <div class="p-5 text-gray-900 dark:text-gray-100">{{ user.id }} - {{ user.name }}</div>
+                        <div class="p-5 text-gray-900 dark:text-gray-100">{{ user.name }}</div>
                         <a
                             v-if="!groupCheckbox"
                             href="#"
@@ -155,9 +155,7 @@ const isUserInGroupList = (userId) => {
                     class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-4"
                 >
                     <div class="p-5 text-gray-900 dark:text-gray-100 border-b border-gray-600">
-                        {{ chat.id }} - {{
-                            chat.title ?? 'Chat'
-                        }}
+                        {{ chat.title }}
                     </div>
                     <div
                         v-if="chat.last_message"

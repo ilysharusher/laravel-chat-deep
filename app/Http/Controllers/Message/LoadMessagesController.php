@@ -14,16 +14,11 @@ class LoadMessagesController extends Controller
         $requestValidated = $request->validated();
         $chat = $chat ?? Chat::query()->findOrFail($requestValidated['chat_id']);
 
-        $messages = $chat->messages()
-            ->with('user')
-            ->latest()
-            ->paginate(5, '*', 'page', $requestValidated['page'] ?? 1);
-
-        $is_last_page = (int)$messages->lastPage() === (int)$messages->currentPage();
+        $messages = $chat->paginateMessages($requestValidated['page'] ?? null);
 
         return response()->json([
             'messages' => MessageResource::collection($messages)->resolve(),
-            'is_last_page' => $is_last_page,
+            'is_last_page' => $messages->onLastPage(),
         ]);
     }
 }

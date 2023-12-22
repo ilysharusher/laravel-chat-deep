@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -48,5 +49,19 @@ class User extends Authenticatable
     public function chats(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Chat::class);
+    }
+
+    public function scopeGetIndexChats(): \Illuminate\Database\Eloquent\Collection
+    {
+        return $this->chats()
+            ->has('messages')
+            ->with(['lastMessage', 'chatWith'])
+            ->withCount('unreadMessageStatuses')
+            ->get();
+    }
+
+    public function scopeAnotherUsers(Builder $query): Builder
+    {
+        return $query->where('id', '!=', auth()->id());
     }
 }

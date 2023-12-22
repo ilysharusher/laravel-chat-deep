@@ -49,4 +49,20 @@ class Chat extends Model
             'user_id'
         )->where('user_id', '!=', auth()->id());
     }
+
+    public function paginateMessages($page): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    {
+        return $this->messages()
+            ->with('user')
+            ->latest()
+            ->paginate(5, '*', 'page', $page ?? 1);
+    }
+
+    public function readMessages(): void
+    {
+        $this->unreadMessageStatuses()
+            ->update([
+                'is_read' => true,
+            ]);
+    }
 }

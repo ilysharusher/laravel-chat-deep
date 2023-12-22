@@ -23,13 +23,9 @@ class ChatController extends Controller
 
     public function index(): \Inertia\Response|\Inertia\ResponseFactory
     {
-        $users = User::query()->where('id', '!=', auth()->id())->get();
+        $users = User::query()->anotherUsers()->get();
 
-        $chats = auth()->user()->chats()
-            ->has('messages')
-            ->with(['lastMessage', 'chatWith'])
-            ->withCount('unreadMessageStatuses')
-            ->get();
+        $chats = auth()->user()->getIndexChats();
 
         return inertia('Chat/Index', [
             'users' => UserResource::collection($users)->resolve(),
@@ -56,9 +52,7 @@ class ChatController extends Controller
         } catch (\Exception $exception) {
             DB::rollBack();
 
-            return redirect()->back()->withErrors([
-                'message' => $exception->getMessage(),
-            ]);
+            return back()->with('error', $exception->getMessage());
         }
 
         return redirect()->route('chats.show', $chat->id);
@@ -66,10 +60,7 @@ class ChatController extends Controller
 
     public function show(Chat $chat): \Inertia\Response|\Inertia\ResponseFactory
     {
-        $chat->unreadMessageStatuses()
-            ->update([
-                'is_read' => true,
-            ]);
+        $chat->readMessages();
 
         $messages = App::call(LoadMessagesController::class, compact('chat'))->getData();
 
